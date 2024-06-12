@@ -31,5 +31,18 @@ class Koneksi {
         return $data;
     }
 
+    // Metode untuk mengambil data tutor
+    public function getDataTutor() {
+        $query = "SELECT dt.*, k.nama as nama_kelas FROM detail_tutor dt JOIN kelas k ON dt.kelas_id = k.id";
+        $result = $this->koneksi->query($query);
+        $data = array();
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $data[] = $row;
+            }
+        }
+        return $data;
+    }
+
 }
 ?>

@@ -123,19 +123,19 @@ if ($result->num_rows > 0) {
                                             </tr>
                                         </thead>
                                         <tbody class="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
-<?php
-    // Tampilkan data jadwal
-    while ($row = $result->fetch_assoc()) {
-        // Tampilkan baris tabel untuk setiap jadwal
-        echo "<tr>";
-        echo "<td class='px-4 py-4 text-sm text-white whitespace-nowrap'>" . $row['tanggal'] . "</td>";
-        echo "<td class='px-4 py-4 text-sm text-white whitespace-nowrap'>" . $row['kelas'] . "</td>";
-        echo "<td class='px-4 py-4 text-sm text-white whitespace-nowrap'>" . $row['tutor'] . "</td>";
-        echo "<td class='px-4 py-4 text-sm text-white whitespace-nowrap'>" . $row['materi'] . "</td>";
-        echo "<td class='px-4 py-4 text-sm text-blue-500 whitespace-nowrap cursor-pointer'>" . $row['link_kelas'] . "</td>";
-        echo "</tr>";
-    }
-?>
+                                            <?php
+                                                // Tampilkan data jadwal
+                                                while ($row = $result->fetch_assoc()) {
+                                                    // Tampilkan baris tabel untuk setiap jadwal
+                                                    echo "<tr>";
+                                                    echo "<td class='px-4 py-4 text-sm text-white whitespace-nowrap'>" . $row['tanggal'] . "</td>";
+                                                    echo "<td class='px-4 py-4 text-sm text-white whitespace-nowrap'>" . $row['kelas'] . "</td>";
+                                                    echo "<td class='px-4 py-4 text-sm text-white whitespace-nowrap'>" . $row['tutor'] . "</td>";
+                                                    echo "<td class='px-4 py-4 text-sm text-white whitespace-nowrap'>" . $row['materi'] . "</td>";
+                                                    echo "<td class='px-4 py-4 text-sm text-blue-500 whitespace-nowrap cursor-pointer'>" . $row['link_kelas'] . "</td>";
+                                                    echo "</tr>";
+                                                }
+                                            ?>
                                         </tbody>
                                     </table>
                                 </div>
