@@ -9,10 +9,45 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
 
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            fetch('get_pembelian.php')
+                .then(response => response.json())
+                .then(data => {
+                    const tableBody = document.querySelector("tbody");
+                    tableBody.innerHTML = ""; // Clear existing rows
+                    data.forEach(item => {
+                        const row = document.createElement("tr");
+
+                        const namaCell = document.createElement("td");
+                        namaCell.classList.add("px-4", "py-4", "text-sm", "text-gray-900", "whitespace-nowrap");
+                        namaCell.textContent = item.nama;
+                        row.appendChild(namaCell);
+
+                        const emailCell = document.createElement("td");
+                        emailCell.classList.add("px-4", "py-4", "text-sm", "text-gray-900", "whitespace-nowrap");
+                        emailCell.textContent = item.email;
+                        row.appendChild(emailCell);
+
+                        const teleponCell = document.createElement("td");
+                        teleponCell.classList.add("px-4", "py-4", "text-sm", "text-gray-900", "whitespace-nowrap");
+                        teleponCell.textContent = item.no_telepon;
+                        row.appendChild(teleponCell);
+
+                        const paketCell = document.createElement("td");
+                        paketCell.classList.add("px-4", "py-4", "text-sm", "text-gray-900", "whitespace-nowrap");
+                        paketCell.textContent = item.nama_kelas;
+                        row.appendChild(paketCell);
+
+                        tableBody.appendChild(row);
+                    });
+                })
+                .catch(error => console.error('Error:', error));
+        });
+    </script>
 </head>
 <body>
     <div class="flex h-screen bg-gray-50">
-
         <!-- sidebar -->
         <div class="hidden md:flex flex-col w-64 bg-slate-200">
             <div class="flex items-center justify-center h-16 bg-white shadow-sm">
@@ -20,56 +55,43 @@
             </div>
             <div class="flex flex-col flex-1 overflow-y-auto">
                 <nav class="flex-1 px-2 py-4 bg-white shadow-sm">
-                    <a href="jadwal-ada-admin.html" class="flex items-center px-4 py-2 text-slate-900 hover:bg-yellow-300  ">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M4 6h16M4 12h16M4 18h16" />
+                    <a href="jadwal-ada-admin.html" class="flex items-center px-4 py-2 text-slate-900 hover:bg-yellow-300">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                         </svg>
                         Jadwal
                     </a>
                     <a href="kelas-admin.html" class="flex items-center px-4 py-2 mt-2 text-slate-900 hover:bg-yellow-300">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M6 18L18 6M6 6l12 12" />
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                         </svg>
                         Kelas
                     </a>
                     <a href="bukti-pembayaran-admin.html" class="flex items-center px-4 py-2 mt-2 text-slate-900 hover:bg-yellow-300">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M6 18L18 6M6 6l12 12" />
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                         </svg>
                         Bukti Pembayaran
                     </a>
                     <a href="list-siswa.html" class="flex items-center px-4 py-2 mt-2 text-slate-900 hover:bg-yellow-300">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M6 18L18 6M6 6l12 12" />
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                         </svg>
                         Siswa
                     </a>
                     <a href="list-tutor.html" class="flex items-center px-4 py-2 mt-2 text-slate-900 hover:bg-yellow-300">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M6 18L18 6M6 6l12 12" />
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                         </svg>
                         Tutor
                     </a>
                 </nav>
             </div>
         </div>
-    
         <!-- Main content -->
         <div class="flex flex-col flex-1 overflow-y-auto">
-            
             <div class="flex items-center justify-between h-16 bg-white border-b border-gray-200">
-                <div class="flex items-center px-4">                   
-                </div>
+                <div class="flex items-center px-4"></div>
             </div>
             <div class="p-4">
                 <h1 class="text-2xl font-bold">Siswa</h1>
@@ -83,62 +105,22 @@
                                     <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                                         <thead class="bg-gray-50 dark:bg-gray-800">
                                             <tr>
-                                                
-                                                <th scope="col" class="px-4 py-3.5 text-sm font-semibold text-left rtl:text-right text-gray-900 ">
+                                                <th scope="col" class="px-4 py-3.5 text-sm font-semibold text-left rtl:text-right text-gray-900">
                                                     Nama Siswa
                                                 </th>
-                
-                                                <th scope="col" class="px-4 py-3.5 text-sm font-semibold text-left rtl:text-right text-gray-900 ">
+                                                <th scope="col" class="px-4 py-3.5 text-sm font-semibold text-left rtl:text-right text-gray-900">
                                                     Email
                                                 </th>
-                
-                                                <th scope="col" class="px-4 py-3.5 text-sm font-semibold text-left rtl:text-right text-gray-900 ">
+                                                <th scope="col" class="px-4 py-3.5 text-sm font-semibold text-left rtl:text-right text-gray-900">
                                                     No Telepon
                                                 </th>
-                
-                                                <th scope="col" class="px-4 py-3.5 text-sm font-semibold text-left rtl:text-right text-gray-900 ">
+                                                <th scope="col" class="px-4 py-3.5 text-sm font-semibold text-left rtl:text-right text-gray-900">
                                                     Paket
                                                 </th>
-                
-                    
                                             </tr>
                                         </thead>
                                         <tbody class="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
-                                            <tr>
-                                                <td class="px-4 py-4 text-sm text-gray-900  whitespace-nowrap">Saskia Dwi</td>
-                                                <td class="px-4 py-4 text-sm text-gray-900  whitespace-nowrap">saskiadwi@gmail.com/td>
-                                                <td class="px-4 py-4 text-sm text-gray-900  whitespace-nowrap">088321689239</td>
-                                                <td class="px-4 py-4 text-sm text-gray-900  whitespace-nowrap">Beginner</td>
-                                            </tr>
-                
-                                            <tr>
-                                                <td class="px-4 py-4 text-sm text-gray-900  whitespace-nowrap">Elvy Yunia</td>
-                                                <td class="px-4 py-4 text-sm text-gray-900  whitespace-nowrap">elvyunia@gmail.com</td> 
-                                                <td class="px-4 py-4 text-sm text-gray-900 whitespace-nowrap">081208391293</td>
-                                                <td class="px-4 py-4 text-sm text-gray-900  whitespace-nowrap">Beginner</td>
-                                            </tr> 
-
-                                            <tr>
-                                                <td class="px-4 py-4 text-sm text-gray-900  whitespace-nowrap">Nadilia Dwi</td>
-                                                <td class="px-4 py-4 text-sm text-gray-900  whitespace-nowrap">nadiliadwi@gmail.com</td> 
-                                                <td class="px-4 py-4 text-sm text-gray-900 whitespace-nowrap">0812083917217</td>
-                                                <td class="px-4 py-4 text-sm text-gray-900  whitespace-nowrap">Beginner</td>
-                                            </tr> 
-
-                                            <tr>
-                                                <td class="px-4 py-4 text-sm text-gray-900  whitespace-nowrap">Bhisma Haris</td>
-                                                <td class="px-4 py-4 text-sm text-gray-900  whitespace-nowrap">bhismaharis@gmail.com</td> 
-                                                <td class="px-4 py-4 text-sm text-gray-900 whitespace-nowrap">081208391728</td>
-                                                <td class="px-4 py-4 text-sm text-gray-900  whitespace-nowrap">Beginner</td>
-                                            </tr> 
-
-                                            <tr>
-                                                <td class="px-4 py-4 text-sm text-gray-900  whitespace-nowrap">Bgus Cahya</td>
-                                                <td class="px-4 py-4 text-sm text-gray-900  whitespace-nowrap">baguscahya@gmail.com</td> 
-                                                <td class="px-4 py-4 text-sm text-gray-900 whitespace-nowrap">08120839128726</td>
-                                                <td class="px-4 py-4 text-sm text-gray-900  whitespace-nowrap">Beginner</td>
-                                            </tr> 
-                                            
+                                            <!-- Data akan diisi oleh JavaScript -->
                                         </tbody>
                                     </table>
                                 </div>
@@ -148,7 +130,6 @@
                 </section>
             </div>
         </div>
-        
     </div>
 </body>
 </html>
