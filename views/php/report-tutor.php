@@ -12,15 +12,14 @@ if (!isset($_SESSION['user_id'])) {
 $user_id = $_SESSION['user_id'];
 
 // Ambil data siswa yang berhubungan dengan user
-$query = "
-    SELECT id, uname
-    FROM data_siswa
-    WHERE tutor_id = ?
-";
-$stmt = $conn->prepare($query);
-$stmt->bind_param("i", $user_id);
-$stmt->execute();
-$result = $stmt->get_result();
+
+// Query untuk menampilkan data report
+$sql_report = "SELECT r.id, s.uname, s.id, r.tanggal, r.nilai
+               FROM report r
+               JOIN data_siswa s ON r.siswa_id = s.id
+               WHERE r.detail_tutor_id = '$user_id'";
+
+$result_report = $conn->query($sql_report);
 
 ?>
 
@@ -93,7 +92,7 @@ $result = $stmt->get_result();
                                             </tr>
                                         </thead>
                                         <tbody class="bg-white divide-y divide-gray-200">
-                                            <?php while($row = $result->fetch_assoc()): ?>
+                                            <?php while($row = $result_report->fetch_assoc()): ?>
                                             <tr>
                                                 <td class="px-6 py-4 whitespace-nowrap"><?php echo $row['uname']; ?></td>
                                                 <td class="px-6 py-4 whitespace-nowrap">
