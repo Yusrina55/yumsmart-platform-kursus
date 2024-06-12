@@ -1,18 +1,33 @@
+<?php
+session_save_path('D:\php_sessions'); // Pastikan direktori ini ada dan dapat ditulis oleh PHP
+session_start();
+include 'connection.php';
+
+$user_id = $_SESSION['user_id'];
+
+// Query untuk mengambil riwayat pembayaran
+$sql = "SELECT p.tanggal_pembelian, k.nama AS paket, k.harga AS harga FROM pembelian p
+          JOIN kelas k ON p.id_kelas = k.id
+          WHERE p.id_siswa = $user_id";
+
+$result = $conn->query($sql);
+
+// Periksa apakah ada data yang ditemukan
+if ($result->num_rows > 0) {
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=h1, initial-scale=1.0">
-    <title>YUMSMART | JADWAL</title>
+    <title>YUMSMART | Riwayat Pembayaran</title>
     <link href="../css/style.css" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
-
 </head>
 <body>
     <div class="flex h-screen bg-gray-50">
-
         <!-- sidebar -->
         <div class="hidden md:flex flex-col w-64 bg-slate-200">
             <div class="flex items-center justify-center h-16 bg-white shadow-sm">
@@ -55,7 +70,7 @@
                 </nav>
             </div>
         </div>
-    
+
         <!-- Main content -->
         <div class="flex flex-col flex-1 overflow-y-auto">
             
@@ -75,49 +90,57 @@
                                     <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                                         <thead class="bg-gray-50 dark:bg-gray-800">
                                             <tr>
-                                                
-                                                <th scope="col" class="px-4 py-3.5 text-sm font-semibold text-left rtl:text-right text-gray-900 ">
+                                                <th scope="col" class="px-4 py-3.5 text-sm font-semibold text-left rtl:text-right text-gray-900">
                                                     Tanggal
                                                 </th>
-                
-                                                <th scope="col" class="px-4 py-3.5 text-sm font-semibold text-left rtl:text-right text-gray-900 ">
+                                                <th scope="col" class="px-4 py-3.5 text-sm font-semibold text-left rtl:text-right text-gray-900">
                                                     Paket
                                                 </th>
-                
-                                                <th scope="col" class="px-4 py-3.5 text-sm font-semibold text-left rtl:text-right text-gray-900 ">
+                                                <th scope="col" class="px-4 py-3.5 text-sm font-semibold text-left rtl:text-right text-gray-900">
                                                     Harga
                                                 </th>
-                
-                                                <th scope="col" class="px-4 py-3.5 text-sm font-semibold text-left rtl:text-right text-gray-900 ">
+                                                <th scope="col" class="px-4 py-3.5 text-sm font-semibold text-left rtl:text-right text-gray-900">
                                                     Total
                                                 </th>
-
-                                                
-                
-                    
                                             </tr>
                                         </thead>
                                         <tbody class="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
-                                            <tr>
-                                                <td class="px-4 py-4 text-sm text-gray-900  whitespace-nowrap">Jan 1 2022, 08.30</td>
-                                                <td class="px-4 py-4 text-sm text-gray-900  whitespace-nowrap">Beginner</td>
-                                                
-                                                <td class="px-4 py-4 text-sm text-gray-900  whitespace-nowrap">Rp500.000,00</td>
-                                                <td class="px-4 py-4 text-sm text-blue-500  whitespace-nowrap cursor-pointer">Rp500.000,00</td>
-                                            </tr>
-                                                           
+<?php
+    // Tampilkan data pembayaran
+    while ($row = $result->fetch_assoc()) {
+        // Hitung total
+        $total = $row['harga'];
+
+        // Format harga menjadi format mata uang
+        $harga = number_format($row['harga'], 0, ',', '.');
+
+        // Tampilkan baris tabel untuk setiap pembayaran
+        echo "<tr>";
+        echo "<td class='px-4 py-4 text-sm text-white whitespace-nowrap'>" . $row['tanggal_pembelian'] . "</td>";
+        echo "<td class='px-4 py-4 text-sm text-white whitespace-nowrap'>" . $row['paket'] . "</td>";
+        echo "<td class='px-4 py-4 text-sm text-white whitespace-nowrap'>Rp" . $harga . "</td>";
+        echo "<td class='px-4 py-4 text-sm text-blue-500 whitespace-nowrap cursor-pointer'>Rp" . $harga . "</td>";
+        echo "</tr>";
+    }
+?>
                                         </tbody>
                                     </table>
                                 </div>
                             </div>
                         </div>
                     </div>
-                
-                    
                 </section>
             </div>
         </div>
-        
     </div>
 </body>
 </html>
+<?php
+} else {
+    // Jika tidak ada data pembelian ditemukan
+    echo "Belum ada riwayat pembayaran.";
+}
+
+// Tutup koneksi ke database
+$conn->close();
+?>

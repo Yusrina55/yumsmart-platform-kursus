@@ -64,7 +64,7 @@ $conn->close();
                         </svg>
                         Kelas
                     </a>
-                    <a href="riwayat-pembayaran.html" class="flex items-center px-4 py-2 mt-2 text-slate-900 hover:bg-yellow-300">
+                    <a href="riwayat-pembayaran.php" class="flex items-center px-4 py-2 mt-2 text-slate-900 hover:bg-yellow-300">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24"
                             stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"

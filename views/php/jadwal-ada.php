@@ -61,7 +61,7 @@ $conn->close();
                         </svg>
                         Kelas
                     </a>
-                    <a href="riwayat-pembayaran.html" class="flex items-center px-4 py-2 mt-2 text-slate-900 hover:bg-yellow-300">
+                    <a href="riwayat-pembayaran.php" class="flex items-center px-4 py-2 mt-2 text-slate-900 hover:bg-yellow-300">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                         </svg>
@@ -116,9 +116,9 @@ $conn->close();
                                             <?php else: ?>
                                                 <?php foreach ($jadwal as $item): ?>
                                                     <tr>
-                                                        <td class="px-4 py-4 text-sm text-gray-900 whitespace-nowrap"><?php echo htmlspecialchars($item['tanggal']); ?></td>
-                                                        <td class="px-4 py-4 text-sm text-gray-900 whitespace-nowrap"><?php echo htmlspecialchars($item['kelas']); ?></td>
-                                                        <td class="px-4 py-4 text-sm text-gray-900 whitespace-nowrap"><?php echo htmlspecialchars($item['materi']); ?></td>
+                                                        <td class="px-4 py-4 text-sm text-white whitespace-nowrap"><?php echo htmlspecialchars($item['tanggal']); ?></td>
+                                                        <td class="px-4 py-4 text-sm text-white whitespace-nowrap"><?php echo htmlspecialchars($item['kelas']); ?></td>
+                                                        <td class="px-4 py-4 text-sm text-white whitespace-nowrap"><?php echo htmlspecialchars($item['materi']); ?></td>
                                                         <td class="px-4 py-4 text-sm text-blue-500 whitespace-nowrap cursor-pointer"><?php echo htmlspecialchars($item['link_kelas']); ?></td>
                                                     </tr>
                                                 <?php endforeach; ?>
