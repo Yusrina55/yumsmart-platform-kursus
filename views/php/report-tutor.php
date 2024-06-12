@@ -1,0 +1,115 @@
+<?php
+session_save_path('D:\php_sessions'); // Pastikan direktori ini ada dan dapat ditulis oleh PHP
+session_start();
+include 'connection.php';
+
+// Cek apakah user sudah login
+if (!isset($_SESSION['user_id'])) {
+    die("Anda harus login untuk melihat jadwal.");
+}
+
+// Ambil data user yang sedang login
+$user_id = $_SESSION['user_id'];
+
+// Ambil data siswa yang berhubungan dengan user
+$query = "
+    SELECT id, uname
+    FROM data_siswa
+    WHERE tutor_id = ?
+";
+$stmt = $conn->prepare($query);
+$stmt->bind_param("i", $user_id);
+$stmt->execute();
+$result = $stmt->get_result();
+
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=h1, initial-scale=1.0">
+    <title>YUMSMART | REPORT</title>
+    <link href="../css/style.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="flex h-screen bg-gray-50">
+        <!-- sidebar -->
+        <div class="hidden md:flex flex-col w-64 bg-slate-200">
+            <div class="flex items-center justify-center h-16 bg-white shadow-sm">
+                <img alt="logo" class="w-[40%] max-h-full" src="../image/logo nama.png">
+            </div>
+            <div class="flex flex-col flex-1 overflow-y-auto">
+                <nav class="flex-1 px-2 py-4 bg-white shadow-sm">
+                    <a href="jadwal-tutor.html" class="flex items-center px-4 py-2 text-slate-900 hover:bg-yellow-300  ">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                        Jadwal
+                    </a>
+                    <a href="kelas-tutor.php" class="flex items-center px-4 py-2 mt-2 text-slate-900 hover:bg-yellow-300">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                        Kelas
+                    </a>
+                    <a href="report-tutor.php" class="flex items-center px-4 py-2 mt-2 text-slate-900 hover:bg-yellow-300">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M13 10V3L4 14h7v7l9-11h-7z" />
+                        </svg>
+                        Report
+                    </a>
+                </nav>
+            </div>
+        </div>
+
+        <!-- Main content -->
+        <div class="flex flex-col flex-1 overflow-y-auto">
+            <div class="flex items-center justify-between h-16 bg-white border-b border-gray-200">
+                <div class="flex items-center px-4">
+                </div>
+            </div>
+            
+            <div class="p-4">
+                <section class="flex-1 p-6 bg-gray-50 dark:bg-gray-800">
+                    <div class="flex flex-col">
+                        <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                            <div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
+                                <div class="overflow-hidden border border-gray-200 dark:border-gray-700 md:rounded-lg">
+                                    <table class="min-w-full divide-y divide-gray-200">
+                                        <thead>
+                                            <tr>
+                                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Siswa</th>
+                                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="bg-white divide-y divide-gray-200">
+                                            <?php while($row = $result->fetch_assoc()): ?>
+                                            <tr>
+                                                <td class="px-6 py-4 whitespace-nowrap"><?php echo $row['uname']; ?></td>
+                                                <td class="px-6 py-4 whitespace-nowrap">
+                                                    <a href="lihat-report.php?siswa_id=<?php echo $row['id']; ?>" class="px-6 py-1.5 font-medium text-white bg-yellow-400 rounded-lg hover:bg-yellow-500">Lihat</a>
+                                                </td>
+                                            </tr>
+                                            <?php endwhile; ?>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>                    
+                </section>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

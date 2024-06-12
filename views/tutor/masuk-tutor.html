@@ -58,5 +58,25 @@
             </div>
         </div>
     </div>
+    <script>
+        // Load username from localStorage if available
+        window.onload = function() {
+            if (localStorage.getItem('rememberMe') === 'true') {
+                document.getElementById('uname').value = localStorage.getItem('username');
+                document.getElementById('remember_me').checked = true;
+            }
+        }
+
+        // Save username to localStorage if "Remember me" is checked
+        document.getElementById('loginForm').onsubmit = function() {
+            if (document.getElementById('remember_me').checked) {
+                localStorage.setItem('username', document.getElementById('uname').value);
+                localStorage.setItem('rememberMe', 'true');
+            } else {
+                localStorage.removeItem('username');
+                localStorage.removeItem('rememberMe');
+            }
+        }
+    </script>
 </body>
 </html>

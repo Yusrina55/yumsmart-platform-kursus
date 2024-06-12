@@ -5,11 +5,6 @@ include 'connection.php';
 
 $user_id = $_SESSION['user_id'];
 
-// Query untuk mengambil data jadwal
-$sql = "SELECT j.tanggal, j.kelas, dt.nama AS tutor, j.materi, j.link_kelas
-          FROM jadwal j
-          JOIN detail_tutor dt ON j.tutor_id = dt.id";
-
 $sql = "SELECT j.tanggal, k.nama AS kelas, dt.nama AS tutor, d.materi, j.link_kelas 
         FROM jadwal j
         JOIN kelas k ON j.kelas_id = k.id
@@ -41,7 +36,7 @@ if ($result->num_rows > 0) {
             </div>
             <div class="flex flex-col flex-1 overflow-y-auto">
                 <nav class="flex-1 px-2 py-4 bg-white shadow-sm">
-                    <a href="jadwal-ada-admin.html" class="flex items-center px-4 py-2 text-slate-900 hover:bg-yellow-300  ">
+                    <a href="jadwal-admin.php" class="flex items-center px-4 py-2 text-slate-900 hover:bg-yellow-300  ">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24"
                             stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -49,7 +44,7 @@ if ($result->num_rows > 0) {
                         </svg>
                         Jadwal
                     </a>
-                    <a href="kelas-admin.html" class="flex items-center px-4 py-2 mt-2 text-slate-900 hover:bg-yellow-300">
+                    <a href="../admin/kelas-admin.html" class="flex items-center px-4 py-2 mt-2 text-slate-900 hover:bg-yellow-300">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24"
                             stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -57,7 +52,7 @@ if ($result->num_rows > 0) {
                         </svg>
                         Kelas
                     </a>
-                    <a href="bukti-pembayaran-admin.html" class="flex items-center px-4 py-2 mt-2 text-slate-900 hover:bg-yellow-300">
+                    <a href="bukti-pembayaran-admin.php" class="flex items-center px-4 py-2 mt-2 text-slate-900 hover:bg-yellow-300">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24"
                             stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -66,7 +61,7 @@ if ($result->num_rows > 0) {
                         Bukti Pembayaran
                     </a>
                     
-                    <a href="list-siswa.html" class="flex items-center px-4 py-2 mt-2 text-slate-900 hover:bg-yellow-300">
+                    <a href="list-siswa.php" class="flex items-center px-4 py-2 mt-2 text-slate-900 hover:bg-yellow-300">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24"
                             stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -74,7 +69,7 @@ if ($result->num_rows > 0) {
                         </svg>
                         Siswa
                     </a>
-                    <a href="list-tutor.html" class="flex items-center px-4 py-2 mt-2 text-slate-900 hover:bg-yellow-300">
+                    <a href="list-tutor.php" class="flex items-center px-4 py-2 mt-2 text-slate-900 hover:bg-yellow-300">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24"
                             stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"

@@ -3,24 +3,35 @@ session_save_path('D:\php_sessions'); // Pastikan direktori ini ada dan dapat di
 session_start();
 include 'connection.php';
 
+if (!isset($_SESSION['user_id'])) {
+    die("Anda harus login untuk melihat jadwal.");
+}
+
 $user_id = $_SESSION['user_id'];
 
-// Query untuk mengambil riwayat pembayaran
-$sql = "SELECT p.tanggal_pembelian, ds.uname AS nama, k.nama AS paket, k.harga AS harga FROM pembelian p
-        JOIN kelas k ON p.id_kelas = k.id
-        JOIN data_siswa ds ON p.id_siswa = ds.id";
+$sql = "SELECT j.tanggal, j.jam, k.nama AS kelas, d.materi, j.link_kelas
+        FROM jadwal j
+        JOIN kelas k ON j.kelas_id = k.id
+        JOIN detail_kelas d ON j.materi_id = d.id
+        JOIN detail_tutor dt ON j.detail_tutor_id = dt.id
+        WHERE j.detail_tutor_id = '$user_id'";
 
 $result = $conn->query($sql);
 
 // Periksa apakah ada data yang ditemukan
 if ($result->num_rows > 0) {
+    $jadwal = [];
+    while ($row = $result->fetch_assoc()) {
+        $jadwal[] = $row;
+    }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=h1, initial-scale=1.0">
-    <title>YUMSMART | BUKTI PEMBAYARAN</title>
+    <title>YUMSMART | JADWAL</title>
     <link href="../css/style.css" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -37,7 +48,7 @@ if ($result->num_rows > 0) {
             </div>
             <div class="flex flex-col flex-1 overflow-y-auto">
                 <nav class="flex-1 px-2 py-4 bg-white shadow-sm">
-                    <a href="jadwal-admin.php" class="flex items-center px-4 py-2 text-slate-900 hover:bg-yellow-300  ">
+                    <a href="jadwal-tutor.php" class="flex items-center px-4 py-2 text-slate-900 hover:bg-yellow-300  ">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24"
                             stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -45,7 +56,7 @@ if ($result->num_rows > 0) {
                         </svg>
                         Jadwal
                     </a>
-                    <a href="../admin/kelas-admin.html" class="flex items-center px-4 py-2 mt-2 text-slate-900 hover:bg-yellow-300">
+                    <a href="kelas-tutor.php" class="flex items-center px-4 py-2 mt-2 text-slate-900 hover:bg-yellow-300">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24"
                             stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -53,30 +64,14 @@ if ($result->num_rows > 0) {
                         </svg>
                         Kelas
                     </a>
-                    <a href="bukti-pembayaran-admin.php" class="flex items-center px-4 py-2 mt-2 text-slate-900 hover:bg-yellow-300">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                        Bukti Pembayaran
                     </a>
-                    
-                    <a href="list-siswa.php" class="flex items-center px-4 py-2 mt-2 text-slate-900 hover:bg-yellow-300">
+                    <a href="report-tutor.html" class="flex items-center px-4 py-2 mt-2 text-slate-900 hover:bg-yellow-300">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24"
                             stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M6 18L18 6M6 6l12 12" />
+                                d="M13 10V3L4 14h7v7l9-11h-7z" />
                         </svg>
-                        Siswa
-                    </a>
-                    <a href="list-tutor.php" class="flex items-center px-4 py-2 mt-2 text-slate-900 hover:bg-yellow-300">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                        Tutor
+                        Report
                     </a>
                 </nav>
             </div>
@@ -84,12 +79,13 @@ if ($result->num_rows > 0) {
     
         <!-- Main content -->
         <div class="flex flex-col flex-1 overflow-y-auto">
+            
             <div class="flex items-center justify-between h-16 bg-white border-b border-gray-200">
                 <div class="flex items-center px-4">                   
                 </div>
             </div>
             <div class="p-4">
-                <h1 class="text-2xl font-bold">Riwayat Pembayaran</h1>
+                <h1 class="text-2xl font-bold">Silakan cek jadwalmu !</h1>
             </div>
             <div class="p-4">
                 <section class="flex-1 p-6 bg-gray-50 dark:bg-gray-800">
@@ -106,56 +102,49 @@ if ($result->num_rows > 0) {
                                                 </th>
 
                                                 <th scope="col" class="px-4 py-3.5 text-sm font-semibold text-left rtl:text-right text-gray-900 ">
-                                                    Nama Siswa
-                                                </th>
+                                                    Jam
+                                                </th>  
                 
                                                 <th scope="col" class="px-4 py-3.5 text-sm font-semibold text-left rtl:text-right text-gray-900 ">
-                                                    Paket
-                                                </th>
+                                                    Kelas
+                                                </th>               
                 
                                                 <th scope="col" class="px-4 py-3.5 text-sm font-semibold text-left rtl:text-right text-gray-900 ">
-                                                    Harga
+                                                    Materi
+                                                </th>
+
+                                                <th scope="col" class="px-4 py-3.5 text-sm font-semibold text-left rtl:text-right text-gray-900 ">
+                                                    Link Kelas
                                                 </th>
                 
-                                                <th scope="col" class="px-4 py-3.5 text-sm font-semibold text-left rtl:text-right text-gray-900 ">
-                                                    Total
-                                                </th>
-                                
+                    
                                             </tr>
                                         </thead>
                                         <tbody class="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
-                                        <?php
-                                                // Tampilkan data pembayaran
-                                                while ($row = $result->fetch_assoc()) {
-                                                    // Hitung total
-                                                    $total = $row['harga'];
-
-                                                    // Format harga menjadi format mata uang
-                                                    $harga = number_format($row['harga'], 0, ',', '.');
-
-                                                    // Tampilkan baris tabel untuk setiap pembayaran
-                                                    echo "<tr>";
-                                                    echo "<td class='px-4 py-4 text-sm text-white whitespace-nowrap'>" . $row['tanggal_pembelian'] . "</td>";
-                                                    echo "<td class='px-4 py-4 text-sm text-white whitespace-nowrap'>" . $row['nama'] . "</td>";
-                                                    echo "<td class='px-4 py-4 text-sm text-white whitespace-nowrap'>" . $row['paket'] . "</td>";
-                                                    echo "<td class='px-4 py-4 text-sm text-white whitespace-nowrap'>Rp" . $harga . "</td>";
-                                                    echo "<td class='px-4 py-4 text-sm text-blue-500 whitespace-nowrap cursor-pointer'>Rp" . $harga . "</td>";
-                                                    echo "</tr>";
-                                                }
-                                            ?>
-                                                           
+                                            <?php if (empty($jadwal)): ?>
+                                                <tr>
+                                                    <td colspan="4" class="px-4 py-4 text-center text-gray-900">Tidak ada jadwal yang ditemukan.</td>
+                                                </tr>
+                                            <?php else: ?>
+                                                <?php foreach ($jadwal as $item): ?>
+                                                    <tr>
+                                                        <td class="px-4 py-4 text-sm text-white whitespace-nowrap"><?php echo htmlspecialchars($item['tanggal']); ?></td>
+                                                        <td class="px-4 py-4 text-sm text-white whitespace-nowrap"><?php echo htmlspecialchars($item['jam']); ?></td>
+                                                        <td class="px-4 py-4 text-sm text-white whitespace-nowrap"><?php echo htmlspecialchars($item['kelas']); ?></td>
+                                                        <td class="px-4 py-4 text-sm text-white whitespace-nowrap"><?php echo htmlspecialchars($item['materi']); ?></td>
+                                                        <td class="px-4 py-4 text-sm text-blue-500 whitespace-nowrap cursor-pointer"><?php echo htmlspecialchars($item['link_kelas']); ?></td>
+                                                    </tr>
+                                                <?php endforeach; ?>
+                                            <?php endif; ?>
                                         </tbody>
                                     </table>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                
-                    
+                    </div>                                   
                 </section>
             </div>
-        </div>
-        
+        </div>        
     </div>
 </body>
 </html>

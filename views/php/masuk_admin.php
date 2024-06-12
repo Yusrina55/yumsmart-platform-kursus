@@ -13,7 +13,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if ($result->num_rows > 0) {
         // Redirect ke halaman jadwal-ada-admin.html jika data ada di tabel users
-        header("Location: ../admin/jadwal-ada-admin.html");
+        header("Location: jadwal-admin.php");
         exit();
     } else {
         echo "Username atau password salah.";

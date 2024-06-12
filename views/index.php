@@ -8,9 +8,9 @@
 <body>
     <h1>Welcome to YUMSMART! Silakan Login!</h1>
     <ul>
-        <li><a href="/uas/views/ortu/masuk.html">Siswa</a></li>
-      	<li><a href="/uas/views/tutor/masuk-tutor.html">Tutor</a></li>
-      	<li><a href="/uas/views/admin/masuk-admin.html">Admin</a></li>
+        <li><a href="../views/ortu/masuk.html">Siswa</a></li>
+      	<li><a href="../views/tutor/masuk-tutor.html">Tutor</a></li>
+      	<li><a href="../views/admin/masuk-admin.html">Admin</a></li>
     </ul>
 </body>
 </html>
