@@ -1,8 +1,8 @@
 <?php
 // Konfigurasi database
 $servername = "localhost";
-$username = "yumssmart";
-$password = "yumssmart";
+$username = "root";
+$password = "";
 $dbname = "yumssmart";
 
 // Membuat koneksi

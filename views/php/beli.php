@@ -1,5 +1,11 @@
 <?php
 include 'connection.php';
+session_save_path('D:\php_sessions');
+session_start(); // Mulai sesi untuk mendapatkan user_id
+
+if (!isset($_SESSION['user_id'])) {
+    die("Anda harus login untuk melakukan pembelian.");
+}
 
 $kelasNama = isset($_GET['kelas']) ? $_GET['kelas'] : '';
 
@@ -10,6 +16,22 @@ if ($result->num_rows > 0) {
     $kelas = $result->fetch_assoc();
 } else {
     die("Kelas tidak ditemukan.");
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Simpan data pembelian ke database
+    $user_id = $_SESSION['user_id']; // Ambil ID pengguna dari sesi
+    $kelas_id = $kelas['id']; // ID kelas dari hasil query
+    $tanggalPembelian = date('Y-m-d H:i:s'); // Tanggal dan waktu pembelian
+    
+    $sqlInsert = "INSERT INTO pembelian (id_siswa, id_kelas, tanggal_pembelian) VALUES ('$user_id', '$kelas_id', '$tanggalPembelian')";
+    
+    if ($conn->query($sqlInsert) === TRUE) {
+        header("Location: jadwal-ada.php");
+        exit;
+    } else {
+        echo "Error: " . $sqlInsert . "<br>" . $conn->error;
+    }
 }
 
 $conn->close();
@@ -67,7 +89,9 @@ $conn->close();
                             <span class="font-semibold">Rp<?php echo number_format($kelas['harga'], 2, ',', '.'); ?></span>
                         </div>
                         <div class="text-center pt-6">
-                            <a href="jadwal-ada.html" class="bg-yellow-400 text-white py-2 px-4 rounded-lg mt-4 w-full hover:bg-yellow-500">Checkout</a>
+                            <form method="POST" action="beli.php?kelas=<?php echo urlencode($kelasNama); ?>">
+                                <button type="submit" class="bg-yellow-400 text-white py-2 px-4 rounded-lg mt-4 w-full hover:bg-yellow-500">Checkout</button>
+                            </form>
                         </div>
                     </div>
                 </div>
